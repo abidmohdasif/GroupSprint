@@ -27,12 +27,12 @@
 
 ---
 
-## Day 24 (Thursday — Applied Work)
-**Date:** ___________
+## Day 24 (Friday — Applied Work)
+**Date:** 02/06/26
 
-### [Person 1 Name]
-- **What I did:**  
-- **What I'm doing:**  
+### [Abid]
+- **What I did:**  Worked on the Code and is finishing up the MVP
+- **What I'm doing:**  Trying to get the game actions to work
 - **Blocked?**
 
 ### [Person 2 Name]
