@@ -1,0 +1,1066 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>✨ SPIRIT HATCH ✨</title>
+    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=VT323&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --bg-primary: #1a0033;
+            --bg-secondary: #2d0052;
+            --accent-1: #ff00ff;
+            --accent-2: #00ffff;
+            --accent-3: #ffff00;
+            --text-primary: #ffffff;
+            --text-glow: #ff00ff;
+            --bar-bg: #0d001a;
+            --bar-good: #00ff00;
+            --bar-med: #ffff00;
+            --bar-bad: #ff0000;
+        }
+
+        body {
+            font-family: 'VT323', monospace;
+            background: linear-gradient(135deg, var(--bg-primary) 0%, var(--bg-secondary) 100%);
+            color: var(--text-primary);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        /* Animated background stars */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: 
+                radial-gradient(2px 2px at 20% 30%, white, transparent),
+                radial-gradient(2px 2px at 60% 70%, white, transparent),
+                radial-gradient(1px 1px at 50% 50%, white, transparent),
+                radial-gradient(1px 1px at 80% 10%, white, transparent),
+                radial-gradient(2px 2px at 90% 60%, white, transparent),
+                radial-gradient(1px 1px at 33% 80%, white, transparent);
+            background-size: 200% 200%;
+            animation: twinkle 8s ease-in-out infinite;
+            opacity: 0.5;
+            z-index: 0;
+            pointer-events: none;
+        }
+
+        @keyframes twinkle {
+            0%, 100% { opacity: 0.3; }
+            50% { opacity: 0.8; }
+        }
+
+        .container {
+            max-width: 800px;
+            width: 100%;
+            position: relative;
+            z-index: 1;
+        }
+
+        .game-screen {
+            background: rgba(13, 0, 26, 0.9);
+            border: 4px solid var(--accent-1);
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 
+                0 0 30px var(--accent-1),
+                inset 0 0 20px rgba(255, 0, 255, 0.1);
+            backdrop-filter: blur(10px);
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+            animation: glow 2s ease-in-out infinite;
+        }
+
+        @keyframes glow {
+            0%, 100% { text-shadow: 0 0 10px var(--text-glow), 0 0 20px var(--text-glow); }
+            50% { text-shadow: 0 0 20px var(--text-glow), 0 0 40px var(--text-glow); }
+        }
+
+        .header h1 {
+            font-family: 'Press Start 2P', cursive;
+            font-size: 32px;
+            color: var(--accent-1);
+            margin-bottom: 10px;
+            letter-spacing: 2px;
+        }
+
+        .header p {
+            font-size: 20px;
+            color: var(--accent-2);
+        }
+
+        .spirit-display {
+            text-align: center;
+            margin: 30px 0;
+            padding: 30px;
+            background: linear-gradient(135deg, rgba(255, 0, 255, 0.1), rgba(0, 255, 255, 0.1));
+            border-radius: 15px;
+            border: 2px solid var(--accent-2);
+            position: relative;
+            min-height: 250px;
+        }
+
+        .spirit-image {
+            font-size: 120px;
+            margin: 20px 0;
+            animation: float 3s ease-in-out infinite;
+            display: inline-block;
+            filter: drop-shadow(0 0 20px currentColor);
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-20px); }
+        }
+
+        .spirit-name {
+            font-size: 32px;
+            font-family: 'Press Start 2P', cursive;
+            color: var(--accent-3);
+            margin-bottom: 10px;
+        }
+
+        .spirit-stage {
+            font-size: 24px;
+            color: var(--accent-2);
+        }
+
+        .stats-container {
+            margin: 30px 0;
+        }
+
+        .stat-row {
+            margin: 15px 0;
+        }
+
+        .stat-label {
+            font-size: 24px;
+            margin-bottom: 8px;
+            font-family: 'Press Start 2P', cursive;
+            font-size: 16px;
+        }
+
+        .stat-bar-container {
+            background: var(--bar-bg);
+            border: 2px solid var(--accent-1);
+            border-radius: 10px;
+            height: 30px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .stat-bar {
+            height: 100%;
+            transition: width 0.5s ease, background 0.5s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+            font-weight: bold;
+            position: relative;
+        }
+
+        .stat-bar::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+            animation: shimmer 2s infinite;
+        }
+
+        @keyframes shimmer {
+            0% { left: -100%; }
+            100% { left: 100%; }
+        }
+
+        .info-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 15px;
+            margin: 20px 0;
+        }
+
+        .info-box {
+            background: rgba(255, 0, 255, 0.1);
+            border: 2px solid var(--accent-1);
+            border-radius: 10px;
+            padding: 15px;
+            text-align: center;
+        }
+
+        .info-label {
+            font-size: 16px;
+            color: var(--accent-2);
+            margin-bottom: 5px;
+        }
+
+        .info-value {
+            font-size: 24px;
+            font-family: 'Press Start 2P', cursive;
+            font-size: 18px;
+            color: var(--accent-3);
+        }
+
+        .actions {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+            gap: 10px;
+            margin: 30px 0;
+        }
+
+        .action-btn {
+            font-family: 'Press Start 2P', cursive;
+            font-size: 14px;
+            padding: 15px 20px;
+            border: 3px solid var(--accent-1);
+            background: linear-gradient(135deg, rgba(255, 0, 255, 0.3), rgba(0, 255, 255, 0.3));
+            color: var(--text-primary);
+            cursor: pointer;
+            border-radius: 10px;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .action-btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 0 20px var(--accent-1);
+            border-color: var(--accent-2);
+        }
+
+        .action-btn:active {
+            transform: scale(0.95);
+        }
+
+        .action-btn::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.3);
+            transform: translate(-50%, -50%);
+            transition: width 0.6s, height 0.6s;
+        }
+
+        .action-btn:hover::before {
+            width: 300px;
+            height: 300px;
+        }
+
+        .action-btn span {
+            position: relative;
+            z-index: 1;
+        }
+
+        .message-box {
+            background: rgba(0, 255, 255, 0.1);
+            border: 2px solid var(--accent-2);
+            border-radius: 10px;
+            padding: 20px;
+            margin: 20px 0;
+            font-size: 20px;
+            text-align: center;
+            min-height: 60px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            animation: slideIn 0.5s ease;
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .event-notification {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: linear-gradient(135deg, rgba(255, 0, 255, 0.95), rgba(0, 255, 255, 0.95));
+            border: 3px solid var(--accent-3);
+            border-radius: 15px;
+            padding: 20px;
+            max-width: 300px;
+            box-shadow: 0 0 30px var(--accent-1);
+            animation: slideInRight 0.5s ease, pulse 2s ease-in-out infinite;
+            z-index: 1000;
+        }
+
+        @keyframes slideInRight {
+            from {
+                opacity: 0;
+                transform: translateX(400px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 2000;
+            animation: fadeIn 0.3s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        .modal {
+            background: var(--bg-primary);
+            border: 4px solid var(--accent-1);
+            border-radius: 20px;
+            padding: 40px;
+            max-width: 500px;
+            width: 90%;
+            box-shadow: 0 0 50px var(--accent-1);
+            animation: scaleIn 0.5s ease;
+        }
+
+        @keyframes scaleIn {
+            from { transform: scale(0.8); opacity: 0; }
+            to { transform: scale(1); opacity: 1; }
+        }
+
+        .modal h2 {
+            font-family: 'Press Start 2P', cursive;
+            font-size: 24px;
+            color: var(--accent-1);
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .modal input {
+            font-family: 'VT323', monospace;
+            font-size: 24px;
+            width: 100%;
+            padding: 15px;
+            background: var(--bar-bg);
+            border: 2px solid var(--accent-2);
+            border-radius: 10px;
+            color: var(--text-primary);
+            margin-bottom: 20px;
+        }
+
+        .modal button {
+            font-family: 'Press Start 2P', cursive;
+            font-size: 16px;
+            width: 100%;
+            padding: 15px;
+            background: linear-gradient(135deg, var(--accent-1), var(--accent-2));
+            border: none;
+            border-radius: 10px;
+            color: var(--text-primary);
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .modal button:hover {
+            transform: scale(1.05);
+            box-shadow: 0 0 30px var(--accent-1);
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        .warning-text {
+            color: var(--bar-bad);
+            animation: blink 1s infinite;
+        }
+
+        @keyframes blink {
+            0%, 50%, 100% { opacity: 1; }
+            25%, 75% { opacity: 0.5; }
+        }
+
+        @media (max-width: 768px) {
+            .header h1 {
+                font-size: 20px;
+            }
+            
+            .spirit-image {
+                font-size: 80px;
+            }
+            
+            .actions {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            
+            .action-btn {
+                font-size: 12px;
+                padding: 12px 15px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="game-screen">
+            <div class="header">
+                <h1>✨ SPIRIT HATCH ✨</h1>
+                <p>Raise Your Mystical Spirit Animal</p>
+            </div>
+
+            <div class="spirit-display">
+                <div class="spirit-image" id="spiritEmoji">🥚</div>
+                <div class="spirit-name" id="spiritName">Spirit</div>
+                <div class="spirit-stage" id="spiritStage">Egg - Stage 1/5</div>
+            </div>
+
+            <div class="stats-container">
+                <div class="stat-row">
+                    <div class="stat-label">🍖 HUNGER</div>
+                    <div class="stat-bar-container">
+                        <div class="stat-bar" id="hungerBar" style="width: 50%; background: #ffff00;">50%</div>
+                    </div>
+                </div>
+                <div class="stat-row">
+                    <div class="stat-label">😊 HAPPINESS</div>
+                    <div class="stat-bar-container">
+                        <div class="stat-bar" id="happinessBar" style="width: 50%; background: #ffff00;">50%</div>
+                    </div>
+                </div>
+                <div class="stat-row">
+                    <div class="stat-label">❤️ HEALTH</div>
+                    <div class="stat-bar-container">
+                        <div class="stat-bar" id="healthBar" style="width: 50%; background: #ffff00;">50%</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="info-grid">
+                <div class="info-box">
+                    <div class="info-label">📅 AGE</div>
+                    <div class="info-value" id="ageDisplay">0 days</div>
+                </div>
+                <div class="info-box">
+                    <div class="info-label">⏱️ TIME</div>
+                    <div class="info-value" id="timeDisplay">0s</div>
+                </div>
+                <div class="info-box">
+                    <div class="info-label">🎮 ACTIONS</div>
+                    <div class="info-value" id="interactionsDisplay">0</div>
+                </div>
+                <div class="info-box">
+                    <div class="info-label">🎲 EVENTS</div>
+                    <div class="info-value" id="eventsDisplay">0</div>
+                </div>
+            </div>
+
+            <div class="action-stats" id="actionStats" style="margin: 20px 0; padding: 15px; background: rgba(0, 255, 255, 0.05); border: 2px solid var(--accent-2); border-radius: 10px; font-size: 16px;">
+                <div style="text-align: center; margin-bottom: 10px; font-family: 'Press Start 2P', cursive; font-size: 14px; color: var(--accent-2);">
+                    📊 ACTION STATS
+                </div>
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(120px, 1fr)); gap: 8px; text-align: center;">
+                    <div>🍖 Feed: <span id="feedCount">0</span></div>
+                    <div>🎮 Play: <span id="playCount">0</span></div>
+                    <div>😴 Rest: <span id="restCount">0</span></div>
+                    <div>🥋 Train: <span id="trainCount">0</span></div>
+                    <div>🗺️ Explore: <span id="exploreCount">0</span></div>
+                    <div>🧘 Meditate: <span id="meditateCount">0</span></div>
+                    <div>✨ Groom: <span id="groomCount">0</span></div>
+                </div>
+                <div style="text-align: center; margin-top: 10px; font-size: 14px; color: var(--accent-3);">
+                    💡 Your play style determines your final evolution!
+                </div>
+            </div>
+
+            <div class="message-box" id="messageBox">
+                Welcome! Click a button to interact with your spirit.
+            </div>
+
+            <div class="actions">
+                <button class="action-btn" onclick="feedSpirit()">
+                    <span>🍖 FEED</span>
+                </button>
+                <button class="action-btn" onclick="playSpirit()">
+                    <span>🎮 PLAY</span>
+                </button>
+                <button class="action-btn" onclick="restSpirit()">
+                    <span>😴 REST</span>
+                </button>
+                <button class="action-btn" onclick="trainSpirit()">
+                    <span>🥋 TRAIN</span>
+                </button>
+                <button class="action-btn" onclick="exploreSpirit()">
+                    <span>🗺️ EXPLORE</span>
+                </button>
+                <button class="action-btn" onclick="meditateSpirit()">
+                    <span>🧘 MEDITATE</span>
+                </button>
+                <button class="action-btn" onclick="groomSpirit()">
+                    <span>✨ GROOM</span>
+                </button>
+                <button class="action-btn" onclick="evolveSpirit()">
+                    <span>⬆️ EVOLVE</span>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Name Input Modal -->
+    <div class="modal-overlay" id="nameModal">
+        <div class="modal">
+            <h2>WELCOME SPIRIT KEEPER!</h2>
+            <p style="font-size: 20px; margin-bottom: 20px; text-align: center;">
+                Name your spirit animal:
+            </p>
+            <input type="text" id="nameInput" placeholder="Enter name..." maxlength="20">
+            <button onclick="startGame()">BEGIN JOURNEY</button>
+            <p style="font-size: 16px; margin-top: 15px; text-align: center; color: var(--accent-2);">
+                ⚠️ Stats decay -3 every 10 seconds!<br>
+                🎲 Random events will occur!<br>
+                ✨ Your choices determine your final form!
+            </p>
+        </div>
+    </div>
+
+    <script>
+        const EVOLUTION_STAGES = [
+            { name: "Egg", daysRequired: 0, emoji: "🥚" },
+            { name: "Hatchling", daysRequired: 1, emoji: "🐣" },
+            { name: "Young Spirit", daysRequired: 3, emoji: "🦊" },
+            { name: "Mature Spirit", daysRequired: 5, emoji: "🦅" },
+            // Final form determined by play style
+            { name: "Ancient Spirit", daysRequired: 8, emoji: "🐉" }
+        ];
+
+        // Different final evolution forms based on play style
+        const FINAL_FORMS = {
+            warrior: { name: "Warrior Spirit", emoji: "⚔️", description: "Master of Training" },
+            explorer: { name: "Wanderer Spirit", emoji: "🌍", description: "Master of Exploration" },
+            sage: { name: "Sage Spirit", emoji: "📿", description: "Master of Meditation" },
+            companion: { name: "Guardian Spirit", emoji: "🛡️", description: "Master of Care" },
+            joyful: { name: "Radiant Spirit", emoji: "🌟", description: "Master of Happiness" },
+            balanced: { name: "Cosmic Spirit", emoji: "🌌", description: "Master of Balance" },
+            mystic: { name: "Mystic Dragon", emoji: "🐉", description: "Ultimate Spirit" }
+        };
+
+        const RANDOM_EVENTS = [
+            { name: "Shiny Stone", message: "✨ {name} found a shiny stone!", effects: { happiness: 15, hunger: -5 }, emoji: "💎" },
+            { name: "Gentle Rain", message: "🌧️ Gentle rain refreshes {name}!", effects: { health: 10, happiness: 10 }, emoji: "🌧️" },
+            { name: "Wild Spirit", message: "👻 A wild spirit visits {name}!", effects: { happiness: 20, hunger: -10 }, emoji: "👻" },
+            { name: "Mysterious Berry", message: "🫐 {name} discovers berries!", effects: { hunger: 15, health: 5 }, emoji: "🫐" },
+            { name: "Dark Cloud", message: "☁️ A dark cloud makes {name} uneasy...", effects: { happiness: -10, health: -5 }, emoji: "☁️" },
+            { name: "Shooting Star", message: "⭐ {name} sees a shooting star!", effects: { happiness: 25, health: 10 }, emoji: "⭐" },
+            { name: "Ancient Whisper", message: "🌀 Ancient whispers grant wisdom!", effects: { health: 15, happiness: 15, hunger: 10 }, emoji: "🌀" },
+            { name: "Spirit Feast", message: "🍱 {name} finds a spirit feast!", effects: { hunger: 25, happiness: 15 }, emoji: "🍱" },
+            { name: "Moonbeam", message: "🌙 Moonbeam restores {name}!", effects: { health: 20, happiness: 10 }, emoji: "🌙" }
+        ];
+
+        let gameState = {
+            name: "Spirit",
+            hunger: 50,
+            happiness: 50,
+            health: 50,
+            ageDays: 0,
+            evolutionStage: 0,
+            interactions: 0,
+            eventsExperienced: 0,
+            isAlive: true,
+            startTime: Date.now(),
+            lastUpdate: Date.now(),
+            lastDayUpdate: Date.now(),
+            lastEventCheck: Date.now(),
+            finalForm: null,
+            // Track action counts for branching evolution
+            actionCounts: {
+                feed: 0,
+                play: 0,
+                rest: 0,
+                train: 0,
+                explore: 0,
+                meditate: 0,
+                groom: 0
+            }
+        };
+
+        let updateInterval;
+        let eventInterval;
+
+        function startGame() {
+            const nameInput = document.getElementById('nameInput').value.trim();
+            gameState.name = nameInput || "Spirit";
+            document.getElementById('spiritName').textContent = gameState.name;
+            document.getElementById('nameModal').classList.add('hidden');
+            
+            showMessage(`✨ ${gameState.name} has been born! Your journey begins!`);
+            
+            // Start update loops
+            updateInterval = setInterval(updateStats, 1000);
+            eventInterval = setInterval(checkRandomEvent, 60000); // Check every minute
+            
+            updateDisplay();
+        }
+
+        function updateStats() {
+            if (!gameState.isAlive) return;
+
+            const now = Date.now();
+            const timeDiff = (now - gameState.lastUpdate) / 1000; // seconds
+            gameState.lastUpdate = now;
+
+            // Decay: -3 every 10 seconds = -18 per minute = -0.3 per second
+            const decayRate = 0.3;
+            gameState.hunger = Math.max(0, gameState.hunger - (decayRate * timeDiff));
+            gameState.happiness = Math.max(0, gameState.happiness - (decayRate * timeDiff));
+
+            // Health affected by hunger and happiness
+            if (gameState.hunger < 30 || gameState.happiness < 30) {
+                gameState.health = Math.max(0, gameState.health - (0.1 * timeDiff));
+            } else if (gameState.hunger > 70 && gameState.happiness > 70) {
+                gameState.health = Math.min(100, gameState.health + (0.05 * timeDiff));
+            }
+
+            // Check death
+            if (gameState.hunger <= 0 || gameState.happiness <= 0 || gameState.health <= 0) {
+                gameState.isAlive = false;
+                gameOver();
+                return;
+            }
+
+            // Update days (30 seconds = 1 day)
+            if (now - gameState.lastDayUpdate >= 30000) {
+                gameState.ageDays++;
+                gameState.lastDayUpdate = now;
+                showMessage(`⏰ ${gameState.name} is now ${gameState.ageDays} day(s) old!`);
+            }
+
+            updateDisplay();
+        }
+
+        function checkRandomEvent() {
+            if (!gameState.isAlive) return;
+            
+            // 20% chance
+            if (Math.random() < 0.20) {
+                const event = RANDOM_EVENTS[Math.floor(Math.random() * RANDOM_EVENTS.length)];
+                applyEvent(event);
+            }
+        }
+
+        function applyEvent(event) {
+            const effects = event.effects;
+            
+            if (effects.hunger) gameState.hunger = clamp(gameState.hunger + effects.hunger, 0, 100);
+            if (effects.happiness) gameState.happiness = clamp(gameState.happiness + effects.happiness, 0, 100);
+            if (effects.health) gameState.health = clamp(gameState.health + effects.health, 0, 100);
+            
+            gameState.eventsExperienced++;
+            
+            showEventNotification(event.message.replace('{name}', gameState.name));
+            updateDisplay();
+        }
+
+        function feedSpirit() {
+            if (!gameState.isAlive) return;
+            
+            if (gameState.hunger >= 95) {
+                showMessage(`${gameState.name} is already full! 🍽️`);
+                return;
+            }
+            
+            gameState.hunger = Math.min(100, gameState.hunger + random(15, 25));
+            gameState.health = Math.min(100, gameState.health + random(5, 10));
+            gameState.interactions++;
+            gameState.actionCounts.feed++;
+            
+            const messages = [
+                `${gameState.name} happily munches on spiritual energy! ✨`,
+                `${gameState.name} glows brighter as it feeds! 🌟`,
+                `${gameState.name} feels nourished and content! 💫`
+            ];
+            
+            showMessage(messages[Math.floor(Math.random() * messages.length)]);
+            updateDisplay();
+        }
+
+        function playSpirit() {
+            if (!gameState.isAlive) return;
+            
+            if (gameState.happiness >= 95) {
+                showMessage(`${gameState.name} is already very happy! 😊`);
+                return;
+            }
+            
+            gameState.happiness = Math.min(100, gameState.happiness + random(15, 25));
+            gameState.hunger = Math.max(0, gameState.hunger - random(5, 10));
+            gameState.interactions++;
+            gameState.actionCounts.play++;
+            
+            const messages = [
+                `${gameState.name} playfully dances around you! 💃`,
+                `${gameState.name} sparkles with joy! ✨😊`,
+                `${gameState.name} does a happy spin! 🌀`
+            ];
+            
+            showMessage(messages[Math.floor(Math.random() * messages.length)]);
+            updateDisplay();
+        }
+
+        function restSpirit() {
+            if (!gameState.isAlive) return;
+            
+            if (gameState.health >= 95) {
+                showMessage(`${gameState.name} is already well-rested! 😴`);
+                return;
+            }
+            
+            gameState.health = Math.min(100, gameState.health + random(20, 30));
+            gameState.happiness = Math.min(100, gameState.happiness + random(5, 10));
+            gameState.interactions++;
+            gameState.actionCounts.rest++;
+            
+            const messages = [
+                `${gameState.name} curls up and rests peacefully... 😴`,
+                `${gameState.name} takes a rejuvenating nap! 💤`,
+                `${gameState.name} meditates and restores energy! 🧘`
+            ];
+            
+            showMessage(messages[Math.floor(Math.random() * messages.length)]);
+            updateDisplay();
+        }
+
+        function trainSpirit() {
+            if (!gameState.isAlive) return;
+            
+            gameState.health = Math.min(100, gameState.health + random(12, 18));
+            gameState.happiness = Math.min(100, gameState.happiness + random(10, 15));
+            gameState.hunger = Math.max(0, gameState.hunger - random(15, 20));
+            gameState.interactions++;
+            gameState.actionCounts.train++;
+            
+            const messages = [
+                `${gameState.name} practices spiritual techniques! 🥋`,
+                `${gameState.name} trains diligently! 💪`,
+                `${gameState.name} masters a new skill! 🎯`
+            ];
+            
+            showMessage(messages[Math.floor(Math.random() * messages.length)]);
+            updateDisplay();
+        }
+
+        function exploreSpirit() {
+            if (!gameState.isAlive) return;
+            
+            const outcomes = ["great", "good", "neutral", "bad"];
+            const outcome = outcomes[Math.floor(Math.random() * outcomes.length)];
+            
+            let message = "";
+            
+            if (outcome === "great") {
+                gameState.happiness = Math.min(100, gameState.happiness + random(20, 30));
+                gameState.hunger = Math.min(100, gameState.hunger + random(10, 20));
+                gameState.health = Math.min(100, gameState.health + random(5, 15));
+                message = `${gameState.name} discovers a magical paradise! 🌺✨`;
+            } else if (outcome === "good") {
+                gameState.happiness = Math.min(100, gameState.happiness + random(15, 20));
+                gameState.hunger = Math.min(100, gameState.hunger + random(5, 10));
+                message = `${gameState.name} has a pleasant adventure! 🗺️`;
+            } else if (outcome === "neutral") {
+                gameState.happiness = Math.min(100, gameState.happiness + random(5, 10));
+                gameState.hunger = Math.max(0, gameState.hunger - random(5, 10));
+                message = `${gameState.name} wanders around safely. 🚶`;
+            } else {
+                gameState.happiness = Math.max(0, gameState.happiness - random(10, 15));
+                gameState.health = Math.max(0, gameState.health - random(10, 15));
+                gameState.hunger = Math.max(0, gameState.hunger - random(5, 10));
+                message = `${gameState.name} gets lost and returns tired... 😰`;
+            }
+            
+            gameState.interactions++;
+            gameState.actionCounts.explore++;
+            showMessage(message);
+            updateDisplay();
+        }
+
+        function meditateSpirit() {
+            if (!gameState.isAlive) return;
+            
+            gameState.health = Math.min(100, gameState.health + random(10, 15));
+            gameState.happiness = Math.min(100, gameState.happiness + random(10, 15));
+            gameState.hunger = Math.min(100, gameState.hunger + random(8, 12));
+            gameState.interactions++;
+            gameState.actionCounts.meditate++;
+            
+            const messages = [
+                `${gameState.name} enters a meditative state... 🧘‍♀️✨`,
+                `${gameState.name} connects with cosmic energy! 🌌`,
+                `${gameState.name} achieves inner peace! ☯️`
+            ];
+            
+            showMessage(messages[Math.floor(Math.random() * messages.length)]);
+            updateDisplay();
+        }
+
+        function groomSpirit() {
+            if (!gameState.isAlive) return;
+            
+            if (gameState.happiness >= 90 && gameState.health >= 90) {
+                showMessage(`${gameState.name} is already pristine! ✨`);
+                return;
+            }
+            
+            gameState.happiness = Math.min(100, gameState.happiness + random(12, 18));
+            gameState.health = Math.min(100, gameState.health + random(8, 12));
+            gameState.interactions++;
+            gameState.actionCounts.groom++;
+            
+            const messages = [
+                `${gameState.name} enjoys being groomed! ✨🪮`,
+                `You tend to ${gameState.name}'s form! 🌟`,
+                `${gameState.name} feels pampered! 💆‍♀️💕`
+            ];
+            
+            showMessage(messages[Math.floor(Math.random() * messages.length)]);
+            updateDisplay();
+        }
+
+        function determineFinalForm() {
+            const counts = gameState.actionCounts;
+            
+            // Calculate total caring actions (feed, rest, groom)
+            const careTotal = counts.feed + counts.rest + counts.groom;
+            
+            // Find most used action
+            const max = Math.max(
+                counts.train,
+                counts.explore,
+                counts.meditate,
+                counts.play,
+                careTotal
+            );
+            
+            // Calculate balance (how evenly distributed actions are)
+            const allActions = Object.values(counts);
+            const mean = allActions.reduce((a, b) => a + b, 0) / allActions.length;
+            const variance = allActions.reduce((sum, val) => sum + Math.pow(val - mean, 2), 0) / allActions.length;
+            const isBalanced = variance < 10; // Low variance = balanced play
+            
+            // Determine form based on play style
+            if (isBalanced) {
+                return FINAL_FORMS.balanced;
+            } else if (counts.train === max) {
+                return FINAL_FORMS.warrior;
+            } else if (counts.explore === max) {
+                return FINAL_FORMS.explorer;
+            } else if (counts.meditate === max) {
+                return FINAL_FORMS.sage;
+            } else if (counts.play === max) {
+                return FINAL_FORMS.joyful;
+            } else if (careTotal === max) {
+                return FINAL_FORMS.companion;
+            } else {
+                return FINAL_FORMS.mystic;
+            }
+        }
+
+        function evolveSpirit() {
+            if (!gameState.isAlive) return;
+            
+            if (gameState.evolutionStage >= EVOLUTION_STAGES.length - 1) {
+                showMessage(`🌟 ${gameState.name} is at maximum evolution!`);
+                return;
+            }
+            
+            const nextStage = EVOLUTION_STAGES[gameState.evolutionStage + 1];
+            
+            if (gameState.ageDays < nextStage.daysRequired) {
+                showMessage(`❌ Need ${nextStage.daysRequired - gameState.ageDays} more day(s) to evolve!`);
+                return;
+            }
+            
+            if (gameState.hunger < 50 || gameState.happiness < 50 || gameState.health < 50) {
+                showMessage(`❌ All stats must be above 50 to evolve!`);
+                return;
+            }
+            
+            const oldStage = EVOLUTION_STAGES[gameState.evolutionStage];
+            gameState.evolutionStage++;
+            
+            gameState.hunger = Math.min(100, gameState.hunger + 20);
+            gameState.happiness = Math.min(100, gameState.happiness + 20);
+            gameState.health = Math.min(100, gameState.health + 20);
+            
+            // If evolving to final form, determine which form based on play style
+            if (gameState.evolutionStage >= EVOLUTION_STAGES.length - 1) {
+                gameState.finalForm = determineFinalForm();
+                showMessage(`✨ ULTIMATE EVOLUTION! ✨\n${oldStage.name} → ${gameState.finalForm.name}!\n${gameState.finalForm.description}`);
+            } else {
+                const newStage = EVOLUTION_STAGES[gameState.evolutionStage];
+                showMessage(`✨ EVOLUTION! ✨\n${oldStage.name} → ${newStage.name}!`);
+            }
+            
+            updateDisplay();
+            
+            // Check win condition
+            if (gameState.evolutionStage >= EVOLUTION_STAGES.length - 1) {
+                setTimeout(checkWin, 2000);
+            }
+        }
+
+        function checkWin() {
+            if (gameState.evolutionStage >= EVOLUTION_STAGES.length - 1 &&
+                gameState.hunger > 50 && gameState.happiness > 50 && gameState.health > 50) {
+                gameWin();
+            }
+        }
+
+        function gameOver() {
+            clearInterval(updateInterval);
+            clearInterval(eventInterval);
+            showMessage(`💀 ${gameState.name} has faded away... Game Over.`);
+        }
+
+        function gameWin() {
+            clearInterval(updateInterval);
+            clearInterval(eventInterval);
+            
+            const formName = gameState.finalForm ? gameState.finalForm.name : "Ancient Spirit";
+            const formDesc = gameState.finalForm ? gameState.finalForm.description : "Ultimate Spirit";
+            
+            showMessage(`🎉 VICTORY! ${gameState.name} became a ${formName}! (${formDesc}) You win! 🏆`);
+        }
+
+        function updateDisplay() {
+            // Update emoji and stage
+            let currentStage, currentEmoji;
+            
+            if (gameState.finalForm) {
+                // Use final form if determined
+                currentStage = gameState.finalForm.name;
+                currentEmoji = gameState.finalForm.emoji;
+            } else {
+                // Use regular stage
+                const stage = EVOLUTION_STAGES[gameState.evolutionStage];
+                currentStage = stage.name;
+                currentEmoji = stage.emoji;
+            }
+            
+            document.getElementById('spiritEmoji').textContent = currentEmoji;
+            document.getElementById('spiritStage').textContent = `${currentStage} - Stage ${gameState.evolutionStage + 1}/5`;
+            
+            // Update stat bars
+            updateStatBar('hungerBar', gameState.hunger);
+            updateStatBar('happinessBar', gameState.happiness);
+            updateStatBar('healthBar', gameState.health);
+            
+            // Update info
+            document.getElementById('ageDisplay').textContent = `${gameState.ageDays} days`;
+            const timeAlive = Math.floor((Date.now() - gameState.startTime) / 1000);
+            document.getElementById('timeDisplay').textContent = formatTime(timeAlive);
+            document.getElementById('interactionsDisplay').textContent = gameState.interactions;
+            document.getElementById('eventsDisplay').textContent = gameState.eventsExperienced;
+            
+            // Update action counts
+            document.getElementById('feedCount').textContent = gameState.actionCounts.feed;
+            document.getElementById('playCount').textContent = gameState.actionCounts.play;
+            document.getElementById('restCount').textContent = gameState.actionCounts.rest;
+            document.getElementById('trainCount').textContent = gameState.actionCounts.train;
+            document.getElementById('exploreCount').textContent = gameState.actionCounts.explore;
+            document.getElementById('meditateCount').textContent = gameState.actionCounts.meditate;
+            document.getElementById('groomCount').textContent = gameState.actionCounts.groom;
+        }
+
+        function updateStatBar(id, value) {
+            const bar = document.getElementById(id);
+            const percent = Math.round(value);
+            bar.style.width = percent + '%';
+            bar.textContent = percent + '%';
+            
+            if (value > 70) {
+                bar.style.background = 'var(--bar-good)';
+            } else if (value > 30) {
+                bar.style.background = 'var(--bar-med)';
+            } else {
+                bar.style.background = 'var(--bar-bad)';
+            }
+        }
+
+        function showMessage(message) {
+            const messageBox = document.getElementById('messageBox');
+            messageBox.textContent = message;
+            messageBox.style.animation = 'none';
+            setTimeout(() => messageBox.style.animation = 'slideIn 0.5s ease', 10);
+        }
+
+        function showEventNotification(message) {
+            const notification = document.createElement('div');
+            notification.className = 'event-notification';
+            notification.textContent = '🎲 ' + message;
+            document.body.appendChild(notification);
+            
+            setTimeout(() => {
+                notification.style.opacity = '0';
+                notification.style.transition = 'opacity 0.5s ease';
+                setTimeout(() => notification.remove(), 500);
+            }, 4000);
+        }
+
+        function formatTime(seconds) {
+            const h = Math.floor(seconds / 3600);
+            const m = Math.floor((seconds % 3600) / 60);
+            const s = seconds % 60;
+            
+            if (h > 0) return `${h}h ${m}m`;
+            if (m > 0) return `${m}m ${s}s`;
+            return `${s}s`;
+        }
+
+        function random(min, max) {
+            return Math.floor(Math.random() * (max - min + 1)) + min;
+        }
+
+        function clamp(value, min, max) {
+            return Math.max(min, Math.min(max, value));
+        }
+    </script>
+</body>
+</html>
