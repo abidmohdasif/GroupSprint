@@ -3,6 +3,7 @@
 SPIRIT HATCH - Simple Python Web Server
 Uses only Python standard library (no external dependencies!)
 Works perfectly in VS Code
+try
 """
 
 import http.server
